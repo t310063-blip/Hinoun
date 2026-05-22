@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中學習歷程檔案 - 清新手帳風</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: oklch(0.98 0.005 85);
+        }
+        .serif-font {
+            font-family: 'Noto Serif TC', serif;
+        }
+        /* 隱藏滾動條但保持可捲動功能 */
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 漸顯動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 500ms cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24">
+
+    <div x-data="{ 
+        activeCategory: 'self-learning',
+        categories: {
+            'self-learning': {
+                title: '自主學習',
+                icon: '🌱',
+                description: '利用課餘時間進行有系統的延伸閱讀與技術實作，培養獨立解決問題的能力。',
+                accentColor: '#4a7c59',
+                tagBg: 'bg-emerald-50',
+                tagText: 'text-emerald-700',
+                items: [
+                    {
+                        title: 'Python 網頁爬蟲與數據視覺化',
+                        semester: '112學年度 第一學期',
+                        subject: '資訊科技延伸',
+                        description: '利用課餘時間自主線上學習 Python，從基礎語法出發，最終成功寫出能自動抓取每日天氣與即時新聞的爬蟲程式，並將數據繪製成圖表。',
+                        achievement: '完成 30 頁自主學習計畫書，並在全校自主學習成果發表會上獲得優良評審推薦。',
+                        reflection: '剛開始常卡在網頁結構解析失敗，後來學會利用開發者工具（F12）耐心地觀察標籤。這讓我明白，面對未知的 Bug 時，拆解步驟比乾著急更有效。',
+                        tags: ['Python', '網頁爬蟲', '自主學習', '資料分析'],
+                        expanded: false
+                    }
+                ]
+            },
+            'explore-practice': {
+                title: '探究與實作',
+                icon: '🧪',
+                description: '透過觀察現象、提出假說、設計實驗，在動手做的過程中驗證科學理論。',
+                accentColor: '#c18c5d',
+                tagBg: 'bg-amber-50',
+                tagText: 'text-amber-700',
+                items: [
+                    {
+                        title: '校園微氣候與綠建築效益探討',
+                        semester: '112學年度 第二學期',
+                        subject: '地球科學探究',
+                        description: '與小組成員在校園內不同的綠化區域裝設感測器，連續兩週收集溫度與濕度數據，分析植物覆蓋率對緩解都市熱島效應的實際影響。',
+                        achievement: '撰寫小論文一組，獲得校內探究與實作優選，並於穿堂進行海報展示。',
+                        reflection: '實驗期間經歷連續暴雨，導致部分數據異常。我們學到了如何篩選無效數據，並在報告中誠實檢討環境變因，這才是真正的科學精神。',
+                        tags: ['地球科學', '小論文', '團隊合作', '數據統計'],
+                        expanded: false
+                    }
+                ]
+            },
+            'subject-deepening': {
+                title: '學科深耕',
+                icon: '📚',
+                description: '課堂知識的延伸與應用，將課本上的理論轉化為深刻的專題成果。',
+                accentColor: '#5a7a96',
+                tagBg: 'bg-blue-50',
+                tagText: 'text-blue-700',
+                items: [
+                    {
+                        title: '歷史專題：從飲食文化看大航海時代的物種交換',
+                        semester: '113學年度 第一學期',
+                        subject: '歷史專案',
+                        description: '探討辣椒、馬鈴薯等美洲作物如何改變亞洲與歐洲的飲食結構與人口組成。透過文獻回顧與史料交叉比對，重新解構這段全球化歷史。',
+                        achievement: '完成 5,000 字歷史專題報告，並製作精美 PPT 進行全班簡報，獲得 95 分的高分評價。',
+                        reflection: '歷史不只是背誦年份，當我發現平時吃的地瓜背後隱藏著數百年前的全球貿易網時，那種震撼讓我覺得歷史課本活了過來。',
+                        tags: ['歷史專題', '文獻分析', '專報簡報'],
+                        expanded: false
+                    }
+                ]
+            },
+            'english-drama': {
+                title: '英文戲劇',
+                icon: '🎭',
+                description: '跨越語言藩籬的藝術展現，從劇本改編到舞台詮釋，展現外語表達力。',
+                accentColor: '#a37081',
+                tagBg: 'bg-rose-50',
+                tagText: 'text-rose-700',
+                items: [
+                    {
+                        title: '年度英文戲劇公演：《羅密歐與茱麗葉》現代改編版',
+                        semester: '113學年度 第一學期',
+                        subject: '應用英文',
+                        description: '擔任劇組副導演與核心編劇，將莎士比亞經典悲劇融入現代社群媒體冷暴力議題，並全英語上台演出。',
+                        achievement: '榮獲全校英文戲劇比賽「最佳劇本獎」與「團隊總冠軍」。',
+                        reflection: '用全英文背台詞已經很難，還要加上肢體情緒。在排練多次想放棄時，大家圍在一起對台詞的氛圍支撐了我，也讓我的英語口說流暢度大幅提升。',
+                        tags: ['英語口說', '戲劇編導', '舞台表演', '跨界合作'],
+                        expanded: false
+                    }
+                ]
+            },
+            'math-competition': {
+                title: '數學競賽',
+                icon: '🏆',
+                description: '邏輯思維與解題速度的極致挑戰，在數字與幾何的世界中精益求精。',
+                accentColor: '#bd6b44',
+                tagBg: 'bg-orange-50',
+                tagText: 'text-orange-700',
+                items: [
+                    {
+                        title: '全國高中數學能力競賽（校內初賽）',
+                        year: '2025年',
+                        description: '代表班級参加校內數學奧林匹亞選拔賽，挑戰高難度的幾何證明題與數論推導，在高壓的限時環境中激發思考潛能。',
+                        award: '校內初賽一等獎',
+                        achievement: '取得代表學校參加分區複賽的資格。',
+                        reflection: '競賽題目難度遠高於課本，讓我明白『換個角度思考』的重要性。雖然有些題目當下沒解出來，但賽後與老師討論的過程讓我對幾何模型有了更深的體會。',
+                        tags: ['數學競賽', '數論思維', '幾何證明'],
+                        expanded: false
+                    }
+                ]
+            }
+        }
+    }">
+
+        <div class="relative overflow-hidden bg-cover bg-center" style="background: linear-gradient(135deg, rgba(90, 122, 150, 0.08) 0%, rgba(32, 54, 85, 0.06) 100%), url('https://d2xsxph8kpxj0f.cloudfront.net/310519663684940490/8YrHt53mv4UVwQefcMW6cL/course-banner-L5HT6PBHy9dhkroMLVFqhf.webp'); background-blend-mode: overlay; border-bottom: 1px solid #e0d5c7;">
+            <div class="relative container mx-auto px-4 py-8 max-w-4xl">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style="background: oklch(0.55 0.12 230 / 0.15)">
+                        📖
+                    </div>
+                    <div>
+                        <span class="px-2 py-0.5 rounded text-xs mb-1 block w-fit" style="background: oklch(0.55 0.12 230 / 0.12); color: oklch(0.35 0.1 230)">
+                            學習歷程
+                        </span>
+                        <h1 class="text-2xl font-bold serif-font" style="color: oklch(0.25 0.01 60)">
+                            高中學習歷程檔案
+                        </h1>
+                    </div>
+                </div>
+                <p class="text-sm mt-2 max-w-2xl" style="color: oklch(0.45 0.02 60)">
+                    記錄在學期間的自主探索、學科深耕與競賽成果，將每一次的嘗試轉化為成長的軌跡。
+                </p>
+            </div>
+        </div>
+
+        <div class="sticky top-0 z-10" style="background: oklch(0.97 0.012 85 / 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid oklch(0.88 0.02 85);">
+            <div class="overflow-x-auto max-w-4xl mx-auto scrollbar-none">
+                <div class="flex gap-2 px-4 py-3 min-w-max">
+                    <template x-for="(cat, id) in categories" :key="id">
+                        <button 
+                            @click="activeCategory = id"
+                            class="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap"
+                            :style="activeCategory === id 
+                                ? { background: cat.accentColor, color: 'oklch(0.98 0.005 85)', boxShadow: `0 4px 12px ${cat.accentColor}40`, transform: 'scale(1.02)' } 
+                                : { background: 'oklch(1 0.005 85)', color: 'oklch(0.45 0.02 60)', border: '1px solid oklch(0.88 0.02 85)' }"
+                        >
+                            <span x-text="cat.icon"></span>
+                            <span x-text="cat.title"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 py-6 max-w-4xl">
+            <div :key="activeCategory" class="animate-fade-in">
+                
+                <div class="flex items-start gap-3 p-4 rounded-xl mb-5"
+                     :style="{ background: `${categories[activeCategory].accentColor}0d`, border: `1px solid ${categories[activeCategory].accentColor}30` }">
+                    <span class="text-2xl flex-shrink-0" x-text="categories[activeCategory].icon"></span>
+                    <div>
+                        <h2 class="text-lg font-bold mb-1 serif-font" style="color: oklch(0.25 0.01 60)" x-text="categories[activeCategory].title"></h2>
+                        <p class="text-sm leading-relaxed" style="color: oklch(0.45 0.02 60)" x-text="categories[activeCategory].description"></p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <template x-for="(item, index) in categories[activeCategory].items" :key="index">
+                        <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden transition-all duration-200" style="box-shadow: 0 2px 8px rgba(0,0,0,0.04)">
+                            <div class="flex">
+                                <div class="w-1.5 flex-shrink-0" :style="{ background: categories[activeCategory].accentColor }"></div>
+                                
+                                <div class="flex-1 p-5">
+                                    <div class="flex items-start justify-between gap-4 mb-2">
+                                        <div class="flex-1">
+                                            <h3 class="text-base font-bold leading-snug mb-2 serif-font" style="color: oklch(0.25 0.01 60)" x-text="item.title"></h3>
+                                            
+                                            <div class="flex flex-wrap gap-1.5">
+                                                <template x-if="item.semester">
+                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium" style="background: oklch(0.93 0.01 85); color: oklch(0.55 0.02 60)">
+                                                        📚 <span x-text="item.semester"></span>
+                                                    </span>
+                                                </template>
+                                                <template x-if="item.subject">
+                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium" style="background: oklch(0.93 0.01 85); color: oklch(0.55 0.02 60)">
+                                                        💡 <span x-text="item.subject"></span>
+                                                    </span>
+                                                </template>
+                                                <template x-if="item.award">
+                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium" style="background: oklch(0.72 0.14 75 / 0.15); color: oklch(0.5 0.1 75)">
+                                                        🏆 <span x-text="item.award"></span>
+                                                    </span>
+                                                </template>
+                                                <template x-if="item.year">
+                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium" style="background: oklch(0.93 0.01 85); color: oklch(0.55 0.02 60)">
+                                                        📅 <span x-text="item.year"></span>
+                                                    </span>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        
+                                        <button @click="item.expanded = !item.expanded" 
+                                                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200"
+                                                :style="item.expanded 
+                                                    ? { background: `${categories[activeCategory].accentColor}15`, color: categories[activeCategory].accentColor } 
+                                                    : { background: 'oklch(0.93 0.01 85)', color: 'oklch(0.55 0.02 60)' }">
+                                            <svg x-show="!item.expanded" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                            <svg x-show="item.expanded" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 15l-7-7-7 7"></path></svg>
+                                        </button>
+                                    </div>
+
+                                    <p x-show="!item.expanded" class="text-sm leading-relaxed line-clamp-2 mt-2" style="color: oklch(0.45 0.02 60)" x-text="item.description"></p>
+
+                                    <div x-show="item.expanded" x-transition class="mt-4 space-y-4 pt-2 border-t border-dashed border-stone-200">
+                                        <div>
+                                            <span class="text-xs font-semibold block mb-1 text-stone-400">專案概述</span>
+                                            <p class="text-sm leading-relaxed" style="color: oklch(0.35 0.01 60)" x-text="item.description"></p>
+                                        </div>
+
+                                        <div class="flex items-start gap-2 p-3 rounded-lg" :style="{ background: `${categories[activeCategory].accentColor}0d` }">
+                                            <span class="mt-0.5" :style="{ color: categories[activeCategory].accentColor }">🏅</span>
+                                            <div>
+                                                <span class="text-xs font-semibold block mb-0.5" :style="{ color: categories[activeCategory].accentColor }">學習成果</span>
+                                                <p class="text-sm" style="color: oklch(0.35 0.01 60)" x-text="item.achievement"></p>
+                                            </div>
+                                        </div>
+
+                                        <template x-if="item.reflection">
+                                            <div class="flex items-start gap-2 p-3 rounded-lg" style="background: oklch(0.95 0.01 85)">
+                                                <span class="mt-0.5">💭</span>
+                                                <div>
+                                                    <span class="text-xs font-semibold block mb-0.5" style="color: oklch(0.55 0.1 45)">學習反思</span>
+                                                    <p class="text-sm italic leading-relaxed" style="color: oklch(0.45 0.02 60)" x-text="'「 ' + item.reflection + ' 」'"></p>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <div class="flex flex-wrap gap-1.5 pt-1">
+                                            <template x-for="(tag, tIdx) in item.tags" :key="tIdx">
+                                                <span class="px-2 py-0.5 rounded text-xs font-medium" :class="[categories[activeCategory].tagBg, categories[activeCategory].tagText]" x-text="'#' + tag"></span>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
